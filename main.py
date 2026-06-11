@@ -60,3 +60,4 @@ def approve_handler(call):
     bot.answer_callback_query(call.id, "Mijozga xabar ketdi.")
 
 bot.polling(none_stop=True)
+
