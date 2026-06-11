@@ -4,7 +4,7 @@ from flask import Flask
 from threading import Thread
 
 # 1. TOKEN va ADMIN ID ni bu yerga yozing
-TOKEN = '8944341939:AAGb_gskjlHjYcrkULJmJg3TzPrVATYmFMc'
+TOKEN = 8944341939:AAGb_gskjlHjYcrkULJmJg3TzPrVATYmFMc
 ADMIN_ID = 7654914240 
 
 bot = telebot.TeleBot(TOKEN)
