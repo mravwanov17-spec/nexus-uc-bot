@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 from flask import Flask
 from threading import Thread
+import time
 
 TOKEN = '8944341939:AAHyYOgs8Tgbzn1EJunFuvjBue9irIMPTpA'
 admin_id = "7654914240"
@@ -9,11 +10,14 @@ CHANNEL_LINK = "https://t.me/x17_nexus"
 
 bot = telebot.TeleBot(TOKEN)
 
-# --- BOTNI UXLASHDAN SAQLASH ---
+# --- 24/7 ISHLASH UCHUN KUCHAYTIRILGAN TIZIM ---
 app = Flask('')
 @app.route('/')
-def home(): return "Bot is running!"
-def run(): app.run(host='0.0.0.0', port=8080)
+def home(): return "Bot is alive!"
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
 def keep_alive():
     t = Thread(target=run)
     t.start()
@@ -26,11 +30,13 @@ def send_welcome(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(types.KeyboardButton("💎 UC Sotib olish"), types.KeyboardButton("ℹ️ Admin"))
     
+    # Kanalga o'tish uchun bitta tugma
     inline_markup = types.InlineKeyboardMarkup()
-    inline_markup.add(types.InlineKeyboardButton("📢 Kanalimizga obuna bo'lish", url=CHANNEL_LINK))
+    inline_markup.add(types.InlineKeyboardButton("📢 Kanalimiz", url=CHANNEL_LINK))
     
-    bot.send_message(message.chat.id, "<b>Assalomu alaykum! Nexus UC do'koniga xush kelibsiz!</b> 👋", parse_mode="HTML", reply_markup=markup)
-    bot.send_message(message.chat.id, "Bizning kanal:", reply_markup=inline_markup)
+    bot.send_message(message.chat.id, "<b>Assalomu alaykum! Nexus UC do'koniga xush kelibsiz!</b> 👋", 
+                     parse_mode="HTML", reply_markup=markup)
+    bot.send_message(message.chat.id, "Yangiliklarni kuzatib boring:", reply_markup=inline_markup)
 
 @bot.message_handler(content_types=['text'])
 def text_handler(message):
@@ -78,4 +84,9 @@ def admin_confirm(call):
     bot.send_message(mijoz_id, "✅ Chekingiz tasdiqlandi!")
     bot.edit_message_caption(caption=f"{call.message.caption}\n\n✅ Tasdiqlandi", chat_id=admin_id, message_id=call.message.message_id)
 
-bot.polling(none_stop=True)
+# Botni qayta-qayta ishga tushiruvchi sikl
+while True:
+    try:
+        bot.polling(none_stop=True)
+    except Exception as e:
+        time.sleep(5)
